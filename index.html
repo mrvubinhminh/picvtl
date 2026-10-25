@@ -31,7 +31,6 @@ kbd{font-family:inherit;font-size:12px;font-weight:700;padding:1px 7px;border-ra
 .logo{width:52px;height:52px;flex:none;border-radius:14px;display:grid;place-items:center;font-size:28px;background:linear-gradient(135deg,#4d8dff,#9b6dff);box-shadow:0 8px 24px rgba(90,120,255,.35)}
 .head h1{margin:0;font-size:clamp(20px,3vw,26px);font-weight:800;letter-spacing:-.01em}
 .byline{display:flex;align-items:center;flex-wrap:wrap;gap:3px 10px;margin:6px 0 0;color:var(--muted);font-size:13.5px;letter-spacing:.01em}
-
 .by-who,.by-sch{display:inline-flex;align-items:center;gap:10px;white-space:nowrap}
 .by-sch{flex-basis:100%;gap:8px;padding-left:32px}
 .by-mark{width:22px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--primary),var(--primary-2))}
@@ -102,6 +101,25 @@ input:focus,textarea:focus,select:focus{border-color:var(--primary);outline:none
 .dlg form{display:flex;flex-direction:column;gap:var(--s3);padding:var(--s4) var(--s5) var(--s5)}
 .dlg h3{margin:0;font-size:17px}
 .dlg .row{justify-content:flex-end}
+.dlg-go{min-height:44px;font-size:15px;text-decoration:none}
+.dlg-wide{width:min(760px,calc(100vw - 32px))}
+.rd-video{width:100%;max-height:56vh;border-radius:12px;background:#000}
+.rc-sws{grid-template-columns:1fr}
+#btnRec[hidden],.vb[hidden]{display:none}
+.rec-pill{position:fixed;top:12px;right:12px;z-index:60;display:flex;align-items:center;gap:6px;padding:4px 5px 4px 12px;border-radius:999px;background:rgba(20,16,40,.84);border:1px solid rgba(255,255,255,.16);color:#fff;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;box-shadow:0 8px 24px rgba(0,0,0,.35);backdrop-filter:blur(8px);transition:opacity .35s}
+.rec-pill[hidden]{display:none}
+.rec-pill button{width:32px;height:32px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;cursor:pointer;font-size:13px}
+.rec-pill button:hover{background:rgba(255,255,255,.24)}
+.rec-dot{width:10px;height:10px;border-radius:50%;background:#ff4d5e;animation:recp 1.2s ease-in-out infinite}
+.rec-pill.paused .rec-dot{animation:none;background:#ffb03d}
+body:has(.viewer.idle) .rec-pill{opacity:.3}
+.rec-count{position:fixed;inset:0;z-index:70;display:grid;place-items:center;font-size:min(32vw,220px);font-weight:800;color:#fff;background:rgba(5,4,14,.45);pointer-events:none;text-shadow:0 8px 40px rgba(0,0,0,.5)}
+.rec-count[hidden]{display:none}
+.rec-count.beat{animation:recb .8s ease-out}
+.vb[data-v=rec][aria-pressed=true]{background:#e5484d;color:#fff;animation:recp 1.4s ease-in-out infinite}
+@keyframes recp{50%{opacity:.45}}
+@keyframes recb{from{transform:scale(1.25);opacity:.4}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.rec-dot,.vb[data-v=rec][aria-pressed=true],.rec-count.beat{animation:none}}
 .sw{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer;font-size:14.5px}
 .sw input{appearance:none;-webkit-appearance:none;width:44px;height:26px;border-radius:999px;background:var(--surface-3);border:1px solid var(--border-2);position:relative;flex:none;cursor:pointer;transition:background .15s}
 .sw input::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .18s var(--ease)}
@@ -428,6 +446,33 @@ pre.code{margin:8px 0 0;max-height:180px;overflow:auto;padding:12px;border-radiu
     <div class="row"><button type="button" class="btn" id="kdCancel">Hủy</button><button type="submit" class="btn primary sm" id="kdSave" style="min-height:44px;font-size:15px">☁ Lưu lên kho</button></div>
   </form>
 </dialog>
+<dialog class="dlg" id="recDlg" aria-labelledby="rcTitle">
+  <form method="dialog">
+    <h3 id="rcTitle">⏺ Ghi màn hình thành video</h3>
+    <p class="hint">Trình duyệt sẽ hỏi chọn nội dung cần ghi: thầy chọn <b>Thẻ này</b> (Trình chiếu ảnh dạy học) và bật <b>Chia sẻ cả âm thanh thẻ</b>. Video lưu ngay trên máy, không gửi đi đâu.</p>
+    <div class="sws rc-sws">
+      <label class="sw"><input type="checkbox" id="rcMic"> Thu tiếng micro (giọng thầy giảng)</label>
+      <label class="sw"><input type="checkbox" id="rcTab"> Thu âm thanh trang (nhạc nền, video web)</label>
+      <label class="sw"><input type="checkbox" id="rcCount"> Đếm ngược 3 giây trước khi ghi</label>
+    </div>
+    <div class="field"><span class="lbl">Chất lượng</span>
+      <div class="seg" role="radiogroup" aria-label="Chất lượng video">
+        <label><input type="radio" name="rcQ" value="720"><span>720p · file nhẹ</span></label>
+        <label><input type="radio" name="rcQ" value="1080"><span>1080p · nét</span></label>
+      </div></div>
+    <div class="row"><button type="button" class="btn" id="recCancel">Hủy</button><button type="button" class="btn primary sm dlg-go" id="recGo">⏺ Bắt đầu ghi</button></div>
+  </form>
+</dialog>
+<dialog class="dlg dlg-wide" id="recDone" aria-labelledby="rdTitle">
+  <form method="dialog">
+    <h3 id="rdTitle">🎬 Đã ghi xong video</h3>
+    <video id="rdVideo" class="rd-video" controls playsinline></video>
+    <p class="hint" id="rdInfo"></p>
+    <div class="row"><button type="button" class="btn" id="rdClose">Đóng</button><a class="btn primary sm dlg-go" id="rdSave" href="#" download>⬇ Tải video về máy</a></div>
+  </form>
+</dialog>
+<div class="rec-pill" id="recPill" hidden role="status" aria-label="Đang ghi màn hình"><i class="rec-dot" aria-hidden="true"></i><b id="recTime">00:00</b><button type="button" id="recPause" title="Tạm dừng ghi">⏸</button><button type="button" id="recStopB" title="Dừng ghi và lưu video">⏹</button></div>
+<div class="rec-count" id="recCount" hidden aria-hidden="true">3</div>
 <main class="setup" id="setup">
   <div class="card">
     <header class="head">
@@ -437,6 +482,7 @@ pre.code{margin:8px 0 0;max-height:180px;overflow:auto;padding:12px;border-radiu
         <p class="byline"><span class="by-who"><span class="by-mark" aria-hidden="true"></span><span class="by-name">Thầy Vũ Tiến Lực</span></span><span class="by-sch">Trường THPT Nguyễn Hữu Cảnh<span class="by-sep" aria-hidden="true"></span><span class="by-city">TP.HCM</span></span></p>
       </div>
       <nav class="head-nav" aria-label="Trang web khác">
+        <button type="button" class="btn head-link" id="btnRec" title="Ghi lại màn hình trang này thành video, kèm tiếng micro">⏺ <span>Ghi màn hình</span></button>
         <a class="btn head-link" href="https://trinhchieusn.vercel.app/" target="_blank" rel="noopener" title="Mở trang trinhchieusn.vercel.app trong tab mới">🎉 <span>Sinh nhật, vinh danh</span> <i aria-hidden="true">↗</i></a>
       </nav>
     </header>
@@ -1407,6 +1453,7 @@ const IC = {
   fit: '<path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>',
   rot: '<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>',
   music: '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>',
+  rec: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4" fill="currentColor"/>',
   musicOff: '<path d="M9 13V5l11-2v9"/><circle cx="6" cy="18" r="3"/><path d="M3 3l18 18"/>',
   play: '<path d="M7 4l13 8-13 8z"/>', pause: '<path d="M7 4h3v16H7zM14 4h3v16h-3z"/>',
   timer: '<path d="M10 2h4M12 14l3-3"/><circle cx="12" cy="14" r="8"/>',
@@ -1438,7 +1485,7 @@ const BAR = [['prev', 'Ảnh trước (←)'], ['count'], ['next', 'Ảnh sau (�
   ['laser', 'Bút laser (L)', 1], ['spot', 'Đèn rọi (S)', 1], ['color'], ['lib', 'Thư viện hình vẽ (G)'], ['img', 'Chèn ảnh từ máy (hoặc Ctrl+V để dán ảnh vừa sao chép)'], '|',
   ['undo', 'Hoàn tác (Z)'], ['redo', 'Làm lại (Y)'], ['trash', 'Xóa nét trên ảnh này (C)'], '|',
   ['zout', 'Thu nhỏ (−)'], ['zin', 'Phóng to (+)'], ['fit', 'Vừa màn hình (0)'], ['rot', 'Xoay ảnh (R)'], '|',
-  ['play', 'Tự chạy (A)', 1], ['music', 'Nhạc nền (J)', 1], ['timer', 'Hẹn giờ (D)'], ['board', 'Bảng viết (W)', 1], ['black', 'Màn đen (B)', 1], ['web', 'Mở trang web (O)'], ['save', 'Lưu ảnh kèm nét vẽ'], ['fs', 'Toàn màn hình (F)'], '|',
+  ['play', 'Tự chạy (A)', 1], ['music', 'Nhạc nền (J)', 1], ['rec', 'Ghi màn hình thành video', 1], ['timer', 'Hẹn giờ (D)'], ['board', 'Bảng viết (W)', 1], ['black', 'Màn đen (B)', 1], ['web', 'Mở trang web (O)'], ['save', 'Lưu ảnh kèm nét vẽ'], ['fs', 'Toàn màn hình (F)'], '|',
   ['min', 'Thu gọn, chỉ hiện công cụ đang dùng (Q)'], ['close', 'Thoát (Esc)']];
 bar.innerHTML = `<button type="button" class="vb grip" id="vwGrip" title="Kéo để dời thanh công cụ · bấm đúp để về giữa" aria-label="Dời thanh công cụ">${svg('grip')}</button>
   <div class="bar-full">${BAR.map(b => {
@@ -3601,6 +3648,114 @@ function pageSound(dur) {
   } catch (e) {}
 }
 
+
+/* ---------- Ghi màn hình thành video ----------
+   Ghi chính thẻ trình duyệt này (ảnh, nét bút, laser, bảng) kèm tiếng micro của thầy và âm thanh trang (nhạc nền),
+   xuất file MP4 (Chrome, Edge mới) hoặc WebM. Không gửi đi đâu, video nằm ngay trên máy. */
+const REC = { mr: null, chunks: [], streams: [], ctx: null, t0: 0, acc: 0, timer: 0, mime: '', url: '', paused: false };
+const recOk = !!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia && window.MediaRecorder);
+const recMime = () => ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm']
+  .find(t => { try { return MediaRecorder.isTypeSupported(t); } catch (e) { return false; } }) || '';
+const recFmt = ms => { const s = Math.floor(ms / 1000), h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60, x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : String(m).padStart(2, '0')) + ':' + String(x).padStart(2, '0'); };
+const recMs = () => REC.acc + (REC.mr && !REC.paused ? performance.now() - REC.t0 : 0);
+function recUi() {
+  const on = !!REC.mr;
+  $('#recPill').hidden = !on; $('#recPill').classList.toggle('paused', REC.paused);
+  $('#recPause').textContent = REC.paused ? '▶' : '⏸'; $('#recPause').title = REC.paused ? 'Ghi tiếp' : 'Tạm dừng ghi';
+  pressed('rec', on); const vb = $('.bar-full [data-v=rec]'); if (vb) vb.title = on ? 'Dừng ghi và lưu video' : 'Ghi màn hình thành video';
+  const hb = $('#btnRec'); if (hb) hb.innerHTML = on ? '⏹ <span>Dừng ghi</span>' : '⏺ <span>Ghi màn hình</span>';
+}
+function recTick() { $('#recTime').textContent = recFmt(recMs()); }
+function recOpen() {
+  if (REC.mr) { recStop(); return; }
+  if (!recOk) { toast('Trình duyệt này chưa ghi màn hình được. Thầy dùng Chrome hoặc Edge trên máy tính.', 4000); return; }
+  closePops && VW.open && closePops();
+  $('#rcMic').checked = S.recMic !== false; $('#rcTab').checked = S.recTab !== false; $('#rcCount').checked = S.recCount !== false;
+  const q = $(`input[name=rcQ][value="${S.recQ || '1080'}"]`); if (q) q.checked = true;
+  const d = $('#recDlg'); if (d.showModal) d.showModal(); else d.setAttribute('open', '');
+}
+function recCountdown() {
+  return new Promise(res => {
+    const o = $('#recCount'); let n = 3; o.hidden = false; o.textContent = n;
+    const t = setInterval(() => { n--; if (n > 0) { o.textContent = n; o.classList.remove('beat'); void o.offsetWidth; o.classList.add('beat'); } else { clearInterval(t); o.hidden = true; setTimeout(res, 120); } }, 800);
+  });
+}
+async function recStart() {
+  S.recMic = $('#rcMic').checked; S.recTab = $('#rcTab').checked; S.recCount = $('#rcCount').checked; S.recQ = ($('input[name=rcQ]:checked') || {}).value || '1080'; save();
+  $('#recDlg').close();
+  const big = S.recQ === '1080';
+  let disp;
+  try {
+    disp = await navigator.mediaDevices.getDisplayMedia({
+      video: { frameRate: { ideal: 30, max: 30 }, width: { ideal: big ? 1920 : 1280 }, height: { ideal: big ? 1080 : 720 } },
+      audio: S.recTab ? { echoCancellation: false, noiseSuppression: false, autoGainControl: false, suppressLocalAudioPlayback: false } : false,
+      preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude', systemAudio: 'include'
+    });
+  } catch (e) { toast(e && e.name === 'NotAllowedError' ? 'Đã hủy ghi màn hình' : 'Trình duyệt không cho ghi màn hình', 2600); return; }
+  let mic = null;
+  if (S.recMic) {
+    try { mic = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }); }
+    catch (e) { toast('Không mở được micro, video sẽ không có tiếng thầy', 3200); }
+  }
+  REC.streams = [disp, mic].filter(Boolean);
+  const tracks = disp.getVideoTracks().slice(), aud = REC.streams.filter(s => s.getAudioTracks().length);
+  if (S.recTab && !disp.getAudioTracks().length) toast('Chưa thu âm thanh trang: lần sau thầy bật "Chia sẻ cả âm thanh thẻ" trong hộp chọn của trình duyệt', 4200);
+  if (aud.length === 1) tracks.push(aud[0].getAudioTracks()[0]);
+  else if (aud.length > 1) {
+    const c = REC.ctx = new (window.AudioContext || window.webkitAudioContext)(), dst = c.createMediaStreamDestination();
+    aud.forEach(s => c.createMediaStreamSource(s).connect(dst)); tracks.push(dst.stream.getAudioTracks()[0]);
+  }
+  disp.getVideoTracks()[0].addEventListener('ended', () => recStop());
+  if (S.recCount) await recCountdown();
+  if (!disp.active) { recCleanup(); return; }
+  const mime = REC.mime = recMime();
+  let mr;
+  try { mr = new MediaRecorder(new MediaStream(tracks), Object.assign({ videoBitsPerSecond: big ? 8e6 : 5e6, audioBitsPerSecond: 160000 }, mime ? { mimeType: mime } : {})); }
+  catch (e) { toast('Không tạo được video trên trình duyệt này', 3000); recCleanup(); return; }
+  REC.mr = mr; REC.chunks = []; REC.paused = false; REC.acc = 0; REC.t0 = performance.now();
+  mr.ondataavailable = e => { if (e.data && e.data.size) REC.chunks.push(e.data); };
+  mr.onstop = recDone;
+  mr.start(1000);
+  clearInterval(REC.timer); REC.timer = setInterval(recTick, 500); recTick(); recUi();
+  if (VW.open && S.fs && !document.fullscreenElement) toast('Đang ghi · bấm F để vào lại toàn màn hình', 2600);
+}
+function recPause() {
+  const mr = REC.mr; if (!mr) return;
+  if (REC.paused) { mr.resume(); REC.paused = false; REC.t0 = performance.now(); }
+  else { mr.pause(); REC.paused = true; REC.acc += performance.now() - REC.t0; }
+  recTick(); recUi();
+}
+function recStop() { const mr = REC.mr; if (!mr) return; if (!REC.paused) REC.acc += performance.now() - REC.t0; REC.paused = false; if (mr.state !== 'inactive') mr.stop(); else recDone(); }
+function recCleanup() {
+  REC.streams.forEach(s => s.getTracks().forEach(t => t.stop())); REC.streams = [];
+  if (REC.ctx) { REC.ctx.close().catch(() => {}); REC.ctx = null; }
+  clearInterval(REC.timer); REC.mr = null; REC.paused = false; recUi();
+}
+function recDone() {
+  const dur = REC.acc, type = (REC.mime || 'video/webm').split(';')[0], chunks = REC.chunks; REC.chunks = [];
+  recCleanup(); if (!chunks.length) { toast('Chưa ghi được hình nào', 2000); return; }
+  const blob = new Blob(chunks, { type }), ext = /mp4/.test(type) ? 'mp4' : 'webm';
+  if (REC.url) URL.revokeObjectURL(REC.url); REC.url = URL.createObjectURL(blob);
+  const d = new Date(), p2 = n => String(n).padStart(2, '0');
+  const base = (VW.open && VW.alb ? VW.alb.name : 'Bai-giang').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) || 'Bai-giang';
+  const name = `${base}_${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}_${p2(d.getHours())}-${p2(d.getMinutes())}.${ext}`;
+  const v = $('#rdVideo'); v.src = REC.url;
+  $('#rdInfo').textContent = `${recFmt(dur)} · ${fmtSize(blob.size)} · ${ext.toUpperCase()}` + (ext === 'webm' ? ' · mở bằng Chrome, VLC; tải lên YouTube, Drive được' : '');
+  const a = $('#rdSave'); a.href = REC.url; a.download = name;
+  const dl = $('#recDone'); if (dl.showModal) dl.showModal(); else dl.setAttribute('open', '');
+}
+$('#recGo').addEventListener('click', recStart);
+$('#recCancel').addEventListener('click', () => $('#recDlg').close());
+$('#recPause').addEventListener('click', recPause);
+$('#recStopB').addEventListener('click', recStop);
+$('#rdClose').addEventListener('click', () => { $('#rdVideo').pause(); $('#recDone').close(); });
+$('#recDone').addEventListener('close', () => $('#rdVideo').pause());
+$('#rdSave').addEventListener('click', () => toast('Đang lưu video vào thư mục Tải về', 2200));
+$('#btnRec').addEventListener('click', recOpen);
+if (!recOk) $('#btnRec').hidden = true;
+addEventListener('beforeunload', e => { if (REC.mr) { e.preventDefault(); e.returnValue = ''; } });
+if (!recOk) { const b = $('.bar-full [data-v=rec]'); if (b) b.hidden = true; }
+
 /* Hẹn giờ */
 let audio = null;
 function beep(hi) {
@@ -3736,7 +3891,7 @@ const ACT = {
   laser: () => setTool('laser'), spot: () => setTool('spot'),
   color: () => togglePop('popPen'), cur: () => togglePop('popPen'), undo, redo, trash: clearInk,
   zout: () => zoomC(.8), zin: () => zoomC(1.25), fit: fitView, rot: rotate,
-  play: autoToggle, music: musicToggle, timer: () => togglePop('popTimer'), board: () => { if (VW.boardMode) togglePop('popPen'); else setMode('white'); }, black: () => setMode('black'),
+  play: autoToggle, music: musicToggle, rec: () => recOpen(), timer: () => togglePop('popTimer'), board: () => { if (VW.boardMode) togglePop('popPen'); else setMode('white'); }, black: () => setMode('black'),
   web: () => { if (!$('#vwWeb').hidden) webClose(); else togglePop('popWeb'); }, save: savePng, fs: toggleFs,
   lib: libOpen, img: () => $('#inPaste').click(), addpage: boardAddPage, min: toggleMini, max: toggleMini, close: closeViewer
 };
@@ -3843,6 +3998,7 @@ viewer.addEventListener('dblclick', e => {
 /* Bàn phím */
 document.addEventListener('keydown', e => {
   if (!VW.open) return;
+  if (document.querySelector('dialog[open]')) return;
   const tg = e.target, k = e.key;
   if (tg && tg.closest && tg.closest('input,select,textarea')) { if (k === 'Escape') { tg.blur(); if (!$('#vwLib').hidden) libClose(); closePops(); viewer.focus(); } return; }
   if (!$('#vwLib').hidden) { if (k === 'Escape' || k === 'g' || k === 'G') { e.preventDefault(); libClose(); } return; }
