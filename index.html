@@ -105,7 +105,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--primary);outline:none
 .dlg-wide{width:min(760px,calc(100vw - 32px))}
 .rd-video{width:100%;max-height:56vh;border-radius:12px;background:#000}
 .rc-sws{grid-template-columns:1fr}
-#btnRec[hidden],.vb[hidden]{display:none}
+.vb[hidden]{display:none}
 .rec-pill{position:fixed;top:12px;right:12px;z-index:60;display:flex;align-items:center;gap:6px;padding:4px 5px 4px 12px;border-radius:999px;background:rgba(20,16,40,.84);border:1px solid rgba(255,255,255,.16);color:#fff;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;box-shadow:0 8px 24px rgba(0,0,0,.35);backdrop-filter:blur(8px);transition:opacity .35s}
 .rec-pill[hidden]{display:none}
 .rec-pill button{width:32px;height:32px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;cursor:pointer;font-size:13px}
@@ -242,6 +242,7 @@ pre.code{margin:8px 0 0;max-height:180px;overflow:auto;padding:12px;border-radiu
 .vw-img.from-r{translate:4% 0;transition:none}.vw-img.from-l{translate:-4% 0;transition:none}
 .viewer.white{background:#fff}.viewer.black{background:#000}
 .viewer.white .vw-img,.viewer.black .vw-img,.viewer.white .vw-bg,.viewer.black .vw-bg,.viewer.white .vw-cap,.viewer.black .vw-cap,.viewer.black .vw-ink{opacity:0!important}
+.vw-stage{position:absolute;inset:0;isolation:isolate;overflow:hidden}
 .vw-ink{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .vw-msg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:16px 22px;border-radius:14px;background:rgba(20,18,36,.88);color:#fff;font-weight:600;text-align:center;max-width:80vw;line-height:1.5}
 .vw-spot{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--x,50%) var(--y,50%),transparent 0,transparent calc(var(--r,170px) - 2px),rgba(0,0,0,.86) var(--r,170px))}
@@ -449,7 +450,8 @@ pre.code{margin:8px 0 0;max-height:180px;overflow:auto;padding:12px;border-radiu
 <dialog class="dlg" id="recDlg" aria-labelledby="rcTitle">
   <form method="dialog">
     <h3 id="rcTitle">⏺ Ghi màn hình thành video</h3>
-    <p class="hint">Trình duyệt sẽ hỏi chọn nội dung cần ghi: thầy chọn <b>Thẻ này</b> (Trình chiếu ảnh dạy học) và bật <b>Chia sẻ cả âm thanh thẻ</b>. Video lưu ngay trên máy, không gửi đi đâu.</p>
+    <p class="hint">Video chỉ ghi <b>vùng trình chiếu</b>: ảnh, nét viết vẽ, hình chèn, laser, đèn rọi, bảng, trang web đang mở. Thanh công cụ, bảng chọn bút, đồng hồ hẹn giờ vẫn hiện cho thầy dùng nhưng <b>không có trong video</b>.</p>
+    <p class="hint">Trình duyệt sẽ hỏi chia sẻ thẻ này: bấm <b>Chia sẻ</b> và bật <b>Chia sẻ cả âm thanh thẻ</b> để có nhạc nền. Video lưu ngay trên máy.</p>
     <div class="sws rc-sws">
       <label class="sw"><input type="checkbox" id="rcMic"> Thu tiếng micro (giọng thầy giảng)</label>
       <label class="sw"><input type="checkbox" id="rcTab"> Thu âm thanh trang (nhạc nền, video web)</label>
@@ -482,7 +484,6 @@ pre.code{margin:8px 0 0;max-height:180px;overflow:auto;padding:12px;border-radiu
         <p class="byline"><span class="by-who"><span class="by-mark" aria-hidden="true"></span><span class="by-name">Thầy Vũ Tiến Lực</span></span><span class="by-sch">Trường THPT Nguyễn Hữu Cảnh<span class="by-sep" aria-hidden="true"></span><span class="by-city">TP.HCM</span></span></p>
       </div>
       <nav class="head-nav" aria-label="Trang web khác">
-        <button type="button" class="btn head-link" id="btnRec" title="Ghi lại màn hình trang này thành video, kèm tiếng micro">⏺ <span>Ghi màn hình</span></button>
         <a class="btn head-link" href="https://trinhchieusn.vercel.app/" target="_blank" rel="noopener" title="Mở trang trinhchieusn.vercel.app trong tab mới">🎉 <span>Sinh nhật, vinh danh</span> <i aria-hidden="true">↗</i></a>
       </nav>
     </header>
@@ -623,22 +624,24 @@ pre.code{margin:8px 0 0;max-height:180px;overflow:auto;padding:12px;border-radiu
 </main>
 
 <div id="viewer" class="viewer" hidden tabindex="-1" role="region" aria-label="Trình chiếu ảnh" data-tool="hand" data-bg="blur">
-  <div class="vw-bg" id="vwBg" aria-hidden="true"></div>
-  <canvas id="vwBoard" class="vw-ink vw-board" aria-hidden="true"></canvas>
-  <div class="vw-kb" id="vwKb"><img id="vwImg" class="vw-img" alt="" draggable="false"></div>
-  <div class="vw-msg" id="vwMsg" hidden role="status"></div>
-  <canvas id="vwInk" class="vw-ink" aria-hidden="true"></canvas>
-  <canvas id="vwLive" class="vw-ink" aria-hidden="true"></canvas>
-  <canvas id="vwFx" class="vw-ink" aria-hidden="true"></canvas>
-  <div class="vw-spot" id="vwSpot" hidden aria-hidden="true"></div>
-  <div class="vw-cap" id="vwCap" hidden></div>
-  <div class="vw-prog" aria-hidden="true"><i id="vwProg"></i></div>
-  <div class="vw-web" id="vwWeb" hidden data-size="q">
-    <div class="web-bar"><span aria-hidden="true">🌐</span><span class="sp"></span>
-      <button type="button" data-w="q" title="Một phần tư màn hình">¼</button><button type="button" data-w="h" title="Nửa màn hình">½</button><button type="button" data-w="f" title="Toàn màn hình">⛶</button>
-      <button type="button" data-w="ext" title="Mở trong tab mới" aria-label="Mở trong tab mới">↗</button><button type="button" data-w="x" aria-label="Đóng trang web">✕</button></div>
-    <iframe id="webFrame" title="Trang web" allow="fullscreen; clipboard-write; autoplay"></iframe>
+  <div class="vw-stage" id="vwStage">
+    <div class="vw-bg" id="vwBg" aria-hidden="true"></div>
+    <canvas id="vwBoard" class="vw-ink vw-board" aria-hidden="true"></canvas>
+    <div class="vw-kb" id="vwKb"><img id="vwImg" class="vw-img" alt="" draggable="false"></div>
+    <div class="vw-msg" id="vwMsg" hidden role="status"></div>
+    <canvas id="vwInk" class="vw-ink" aria-hidden="true"></canvas>
+    <canvas id="vwLive" class="vw-ink" aria-hidden="true"></canvas>
+    <canvas id="vwFx" class="vw-ink" aria-hidden="true"></canvas>
+    <div class="vw-spot" id="vwSpot" hidden aria-hidden="true"></div>
+    <div class="vw-cap" id="vwCap" hidden></div>
+    <div class="vw-web" id="vwWeb" hidden data-size="q">
+      <div class="web-bar"><span aria-hidden="true">🌐</span><span class="sp"></span>
+        <button type="button" data-w="q" title="Một phần tư màn hình">¼</button><button type="button" data-w="h" title="Nửa màn hình">½</button><button type="button" data-w="f" title="Toàn màn hình">⛶</button>
+        <button type="button" data-w="ext" title="Mở trong tab mới" aria-label="Mở trong tab mới">↗</button><button type="button" data-w="x" aria-label="Đóng trang web">✕</button></div>
+      <iframe id="webFrame" title="Trang web" allow="fullscreen; clipboard-write; autoplay"></iframe>
+    </div>
   </div>
+  <div class="vw-prog" aria-hidden="true"><i id="vwProg"></i></div>
   <div class="vw-timer" id="vwTimer" hidden><button type="button" id="vwTimerT" title="Tạm dừng hoặc chạy tiếp">00:00</button><button type="button" id="vwTimerX" aria-label="Tắt hẹn giờ">✕</button></div>
   <div class="vw-grid" id="vwGrid" hidden role="dialog" aria-label="Tất cả ảnh">
     <div class="vw-grid-head"><span id="vwGridTitle"></span><button type="button" class="btn sm" id="vwGridX">✕ Đóng</button></div>
@@ -1699,7 +1702,7 @@ function openText(cx, cy, orig) {
   ta.className = 'vw-text'; ta.rows = 1; ta.spellcheck = false; ta.setAttribute('aria-label', 'Nhập chữ, Enter để xong, Shift+Enter xuống dòng');
   Object.assign(ta.style, { left: L0 + 'px', top: T0 + 'px', fontSize: fs + 'px', color: col });
   if (orig) ta.value = orig.text;
-  viewer.appendChild(ta);
+  $('#vwStage').appendChild(ta);
   VW.text = { el: ta, u: (L0 - r.x) / r.w, v: (T0 - r.y) / r.h, fs: fs / r.w, c: col, orig: orig || null };
   const grow = () => { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; ta.style.width = 'auto'; ta.style.width = Math.max(80, ta.scrollWidth + 6) + 'px'; };
   ta.addEventListener('input', grow);
@@ -3132,6 +3135,7 @@ function openViewer(a, i) {
   vwShow(i || 0, 0); wake(); viewer.focus();
   MUS.preview = false; if (!a.board && S.music !== 'off') musicPlay(); else musicStop(true); musUi();
   requestAnimationFrame(restoreBar);
+  if (REC.mr && REC.paused && REC.auto) { REC.auto = false; recPause(); }
 }
 function closeViewer() {
   cancelText();
@@ -3142,6 +3146,7 @@ function closeViewer() {
   vImg.removeAttribute('src'); kbStop(false); kbGhostEnd(true); flipEnd(); musicStop(); MUS.ducked = false;
   if (VW.fsByUs && document.fullscreenElement) document.exitFullscreen().catch(() => {});
   VW.fsByUs = false; $('#btnPlay').focus();
+  if (REC.mr && !REC.paused) { recPause(true); toast('Đã tạm dừng ghi · mở trình chiếu lại để ghi tiếp, hoặc bấm ⏹ để lưu video', 3600); }
 }
 function vwShow(i, dir) {
   const n = VW.list.length; if (!n) return;
@@ -3663,7 +3668,6 @@ function recUi() {
   $('#recPill').hidden = !on; $('#recPill').classList.toggle('paused', REC.paused);
   $('#recPause').textContent = REC.paused ? '▶' : '⏸'; $('#recPause').title = REC.paused ? 'Ghi tiếp' : 'Tạm dừng ghi';
   pressed('rec', on); const vb = $('.bar-full [data-v=rec]'); if (vb) vb.title = on ? 'Dừng ghi và lưu video' : 'Ghi màn hình thành video';
-  const hb = $('#btnRec'); if (hb) hb.innerHTML = on ? '⏹ <span>Dừng ghi</span>' : '⏺ <span>Ghi màn hình</span>';
 }
 function recTick() { $('#recTime').textContent = recFmt(recMs()); }
 function recOpen() {
@@ -3705,7 +3709,13 @@ async function recStart() {
     const c = REC.ctx = new (window.AudioContext || window.webkitAudioContext)(), dst = c.createMediaStreamDestination();
     aud.forEach(s => c.createMediaStreamSource(s).connect(dst)); tracks.push(dst.stream.getAudioTracks()[0]);
   }
-  disp.getVideoTracks()[0].addEventListener('ended', () => recStop());
+  const vt = disp.getVideoTracks()[0];
+  vt.addEventListener('ended', () => recStop());
+  REC.clean = false;
+  if (window.RestrictionTarget && vt.restrictTo) {
+    try { await vt.restrictTo(await RestrictionTarget.fromElement($('#vwStage'))); REC.clean = true; } catch (e) {}
+  }
+  if (!REC.clean) toast('Trình duyệt này chưa ghi riêng được vùng trình chiếu (cần Chrome hoặc Edge bản mới). Video sẽ có cả thanh công cụ.', 5200);
   if (S.recCount) await recCountdown();
   if (!disp.active) { recCleanup(); return; }
   const mime = REC.mime = recMime();
@@ -3719,8 +3729,8 @@ async function recStart() {
   clearInterval(REC.timer); REC.timer = setInterval(recTick, 500); recTick(); recUi();
   if (VW.open && S.fs && !document.fullscreenElement) toast('Đang ghi · bấm F để vào lại toàn màn hình', 2600);
 }
-function recPause() {
-  const mr = REC.mr; if (!mr) return;
+function recPause(auto) {
+  const mr = REC.mr; if (!mr) return; REC.auto = auto === true && !REC.paused;
   if (REC.paused) { mr.resume(); REC.paused = false; REC.t0 = performance.now(); }
   else { mr.pause(); REC.paused = true; REC.acc += performance.now() - REC.t0; }
   recTick(); recUi();
@@ -3746,13 +3756,11 @@ function recDone() {
 }
 $('#recGo').addEventListener('click', recStart);
 $('#recCancel').addEventListener('click', () => $('#recDlg').close());
-$('#recPause').addEventListener('click', recPause);
+$('#recPause').addEventListener('click', () => recPause());
 $('#recStopB').addEventListener('click', recStop);
 $('#rdClose').addEventListener('click', () => { $('#rdVideo').pause(); $('#recDone').close(); });
 $('#recDone').addEventListener('close', () => $('#rdVideo').pause());
 $('#rdSave').addEventListener('click', () => toast('Đang lưu video vào thư mục Tải về', 2200));
-$('#btnRec').addEventListener('click', recOpen);
-if (!recOk) $('#btnRec').hidden = true;
 addEventListener('beforeunload', e => { if (REC.mr) { e.preventDefault(); e.returnValue = ''; } });
 if (!recOk) { const b = $('.bar-full [data-v=rec]'); if (b) b.hidden = true; }
 
