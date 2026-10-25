@@ -1,0 +1,71 @@
+{
+  "id": "./",
+  "name": "Trình chiếu ảnh dạy học",
+  "short_name": "Trình chiếu",
+  "description": "Trình chiếu ảnh dạy học kèm bút, laser, đèn rọi, bảng dạy học và thư viện hình vẽ Toán. Thầy Vũ Tiến Lực, Trường THPT Nguyễn Hữu Cảnh, TP.HCM.",
+  "lang": "vi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0c0b17",
+  "theme_color": "#15132a",
+  "categories": [
+    "education",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "./",
+      "accept": {
+        "image/*": [
+          ".jpg",
+          ".jpeg",
+          ".png",
+          ".webp",
+          ".gif",
+          ".bmp",
+          ".avif",
+          ".heic"
+        ]
+      }
+    }
+  ],
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "shortcuts": [
+    {
+      "name": "Bảng dạy học",
+      "short_name": "Bảng",
+      "url": "./?bang=1",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+TRÌNH CHIẾU ẢNH DẠY HỌC · BẢN WEB APP
+Thầy Vũ Tiến Lực · Trường THPT Nguyễn Hữu Cảnh · TP.HCM
+
+1. TRONG THƯ MỤC CÓ GÌ
+   index.html               Ứng dụng (sửa, nâng cấp app thì sửa file này)
+   manifest.webmanifest     Khai báo tên, biểu tượng để máy nhận là ứng dụng
+   sw.js                    Lưu sẵn app để mở được khi mất mạng
+   icons/                   Biểu tượng ứng dụng
+   vercel.json              Cấu hình khi đưa lên Vercel
+   Chay-thu-tren-Mac.command Bấm đúp để chạy thử trên máy Mac
+
+2. ĐƯA LÊN MẠNG (làm một lần)
+   Web app chỉ cài được khi mở bằng đường link https, không cài được khi mở file trực tiếp.
+   Cách A · Vercel (giống trang trinhchieusn.vercel.app):
+     Mở Terminal tại thư mục này, gõ:  npx vercel --prod
+     Hoặc đưa thư mục lên GitHub rồi Import vào Vercel.
+   Cách B · Netlify Drop (nhanh nhất, không cần cài gì):
+     Vào app.netlify.com/drop, kéo cả thư mục trinh-chieu-webapp thả vào trang.
+   Cách C · GitHub Pages: đưa các file lên một repo, bật Pages trong Settings.
+
+3. CÀI LÊN MÁY
+   Máy tính (Chrome, Edge, Cốc Cốc): mở link, bấm nút "📲 Cài ứng dụng" ở trang chủ
+     hoặc biểu tượng cài đặt ở cuối thanh địa chỉ.
+   Android: mở link bằng Chrome, bấm "📲 Cài ứng dụng" hoặc menu ⋮ → Cài đặt ứng dụng.
+   iPad, iPhone: mở link bằng Safari → nút Chia sẻ → "Thêm vào MH chính".
+   Sau khi cài, app có biểu tượng "Trình chiếu", mở thành cửa sổ riêng, không có thanh địa chỉ.
+
+4. DÙNG KHI ĐÃ CÀI
+   · Mở được khi mất mạng (sau lần mở đầu có mạng). Ảnh tải từ máy, bảng dạy học, thư viện hình,
+     nhạc nền có sẵn đều chạy offline. Ảnh từ Google Sheet, Drive và trang web nhúng vẫn cần mạng.
+   · Máy tính: chuột phải vào ảnh → Mở bằng → Trình chiếu, ảnh vào thành một bộ mới.
+   · Giữ (hoặc chuột phải) biểu tượng app → "Bảng dạy học" để mở thẳng bảng.
+   · Ảnh, bảng, nhạc lưu ngay trong app trên từng máy. Bộ ảnh đã nạp ở bản file .html cũ
+     không tự chuyển sang app; thầy nạp lại một lần.
+
+5. KHI SỬA APP
+   Sửa index.html rồi đưa lên lại như mục 2. App trên các máy tự lấy bản mới ở lần mở kế tiếp
+   khi có mạng. Nếu sửa sw.js thì đổi số phiên bản ở dòng  const V = 'trinh-chieu-v1'.
