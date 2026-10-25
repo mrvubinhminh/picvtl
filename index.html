@@ -4,15 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Trình chiếu ảnh dạy học</title>
-<meta name="description" content="Trình chiếu ảnh dạy học kèm bút, laser, đèn rọi, bảng dạy học và thư viện hình vẽ Toán · Thầy Vũ Tiến Lực, Trường THPT Nguyễn Hữu Cảnh, TP.HCM">
-<meta name="theme-color" content="#15132a">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Trình chiếu">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -40,6 +31,7 @@ kbd{font-family:inherit;font-size:12px;font-weight:700;padding:1px 7px;border-ra
 .logo{width:52px;height:52px;flex:none;border-radius:14px;display:grid;place-items:center;font-size:28px;background:linear-gradient(135deg,#4d8dff,#9b6dff);box-shadow:0 8px 24px rgba(90,120,255,.35)}
 .head h1{margin:0;font-size:clamp(20px,3vw,26px);font-weight:800;letter-spacing:-.01em}
 .byline{display:flex;align-items:center;flex-wrap:wrap;gap:3px 10px;margin:6px 0 0;color:var(--muted);font-size:13.5px;letter-spacing:.01em}
+
 .by-who,.by-sch{display:inline-flex;align-items:center;gap:10px;white-space:nowrap}
 .by-sch{flex-basis:100%;gap:8px;padding-left:32px}
 .by-mark{width:22px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--primary),var(--primary-2))}
@@ -51,13 +43,14 @@ kbd{font-family:inherit;font-size:12px;font-weight:700;padding:1px 7px;border-ra
 .head-nav{flex:none;display:flex;gap:8px}
 .head-link{text-decoration:none;color:var(--text);white-space:nowrap;font-size:14.5px}
 .head-link i{font-style:normal;opacity:.7}
-.head-install{border-color:rgba(255,122,61,.6);background:linear-gradient(180deg,rgba(255,122,61,.16),rgba(255,122,61,.05))}
-.head-install[hidden]{display:none}
 @media (max-width:640px){.head{flex-wrap:wrap}.head-nav{width:100%}.head-link{flex:1}}
 .pad{padding:0 var(--s5) var(--s4);display:flex;flex-direction:column;gap:var(--s3)}
 @media (max-width:560px){.head,.pad{padding-left:var(--s4);padding-right:var(--s4)}}
-.src{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s2)}
-@media (max-width:560px){.src{grid-template-columns:repeat(2,1fr)}}
+.src{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--s2)}
+@media (max-width:760px){.src{grid-template-columns:repeat(6,1fr)}.src>*{grid-column:span 2}.src>:nth-child(n+4){grid-column:span 3}}
+@media (max-width:560px){.src{grid-template-columns:repeat(2,1fr)}.src>*,.src>:nth-child(n+4){grid-column:auto}.src>:last-child{grid-column:1/-1}}
+.src-btn.src-kho{border-color:rgba(94,168,255,.55);background:linear-gradient(180deg,rgba(94,168,255,.13),rgba(94,168,255,.03))}
+.src-btn.src-kho[aria-expanded=true]{border-color:#5ea8ff;background:rgba(94,168,255,.12)}
 .src-btn.src-board{border-color:rgba(255,122,61,.55);background:linear-gradient(180deg,rgba(255,122,61,.12),rgba(255,122,61,.03))}
 .src-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 8px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;text-align:center;transition:border-color .15s,background .15s,transform .1s}
 .src-btn:hover{border-color:var(--border-2);background:var(--surface-2)}
@@ -69,7 +62,7 @@ kbd{font-family:inherit;font-size:12px;font-weight:700;padding:1px 7px;border-ra
 .field{display:flex;flex-direction:column;gap:6px}
 .field>label,.lbl{font-weight:600;font-size:14.5px}
 .hint{color:var(--muted);font-size:13px;margin:0;line-height:1.5}
-input[type=text],input[type=number],input[type=url],textarea,select{width:100%;min-height:44px;padding:10px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--bg);transition:border-color .15s}
+input[type=text],input[type=number],input[type=url],input[type=search],textarea,select{width:100%;min-height:44px;padding:10px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--bg);transition:border-color .15s}
 textarea{resize:vertical;line-height:1.5;min-height:64px}
 input:hover,textarea:hover,select:hover{border-color:var(--border-2)}
 input:focus,textarea:focus,select:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 3px rgba(255,122,61,.22)}
@@ -84,6 +77,31 @@ input:focus,textarea:focus,select:focus{border-color:var(--primary);outline:none
 .status{min-height:0;margin:0;font-size:14px;font-weight:600}
 .status:empty{display:none}
 .status.bad{color:var(--danger)}.status.ok{color:var(--ok)}
+.kho-save{display:flex;flex-direction:column;gap:var(--s2);padding:10px 12px;border-radius:var(--radius-sm);border:1px dashed rgba(94,168,255,.45);background:rgba(94,168,255,.05)}
+.kho-save .hint:empty,#khoFields[hidden]{display:none}
+#khoOn,#khoOff{display:flex;flex-direction:column;gap:var(--s3)}#khoOn[hidden],#khoOff[hidden]{display:none}
+.kho-lead{margin:0;font-size:14px;line-height:1.55;color:var(--muted)}.kho-lead b{color:var(--text)}
+.kho-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.kho-top input{flex:1;min-width:160px;min-height:40px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--border-2);background:var(--surface-2);color:var(--text);font-weight:600;font-size:13px;cursor:pointer}
+.chip:hover{background:var(--surface-3)}
+.chip[aria-pressed=true]{background:#2f7cf6;border-color:#2f7cf6;color:#fff}
+.kho-list{display:flex;flex-direction:column;gap:4px;max-height:min(52vh,460px);overflow:auto;margin:0 -4px;padding:0 4px}
+.kho-h{margin:10px 0 4px;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:#9fc6ff}
+.kho-h:first-child{margin-top:0}
+.kho-g{display:flex;flex-direction:column;gap:4px}
+.kho-it{display:flex;align-items:center;gap:4px;padding:2px 4px 2px 2px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border)}
+.kho-open{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-height:46px;padding:4px 10px;border:0;border-radius:10px;background:transparent;color:var(--text);text-align:left;cursor:pointer}
+.kho-open:hover{background:var(--surface-3)}
+.kho-n{font-weight:600;font-size:14.5px;line-height:1.35;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.kho-open small{color:var(--muted);font-size:12.5px}
+.kho-empty{margin:0;color:var(--muted);font-size:14px;text-align:center;padding:14px 8px}
+.dlg{border:1px solid var(--border-2);border-radius:18px;background:var(--surface);color:var(--text);padding:0;width:min(440px,calc(100vw - 32px));box-shadow:var(--shadow)}
+.dlg::backdrop{background:rgba(5,4,14,.6);backdrop-filter:blur(3px)}
+.dlg form{display:flex;flex-direction:column;gap:var(--s3);padding:var(--s4) var(--s5) var(--s5)}
+.dlg h3{margin:0;font-size:17px}
+.dlg .row{justify-content:flex-end}
 .sw{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer;font-size:14.5px}
 .sw input{appearance:none;-webkit-appearance:none;width:44px;height:26px;border-radius:999px;background:var(--surface-3);border:1px solid var(--border-2);position:relative;flex:none;cursor:pointer;transition:background .15s}
 .sw input::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .18s var(--ease)}
@@ -147,6 +165,7 @@ pre.code{margin:8px 0 0;max-height:180px;overflow:auto;padding:12px;border-radiu
 .ib:hover{background:var(--surface-3)}
 .ib.play{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:var(--primary-ink);font-size:15px}
 .ib.play:hover{filter:brightness(1.08)}
+.ib.saved{color:#5ea8ff}
 .ib.del:hover{background:rgba(255,122,136,.2)}
 @media (max-width:480px){.alb-cov{width:56px;height:40px}.ib{width:36px}}
 .alb-body{padding:0 10px 10px;display:flex;flex-direction:column;gap:8px}
@@ -397,6 +416,18 @@ pre.code{margin:8px 0 0;max-height:180px;overflow:auto;padding:12px;border-radiu
 </head>
 <body>
 
+<dialog class="dlg" id="khoDlg" aria-labelledby="kdTitle">
+  <form method="dialog">
+    <h3 id="kdTitle">☁ Lưu bộ ảnh lên Kho bài giảng</h3>
+    <div class="row2">
+      <div class="field"><label for="kdLop">Lớp</label><select id="kdLop"></select></div>
+      <div class="field"><label for="kdCd">Chủ đề, chương</label><input type="text" id="kdCd" list="khoCds" maxlength="120" autocomplete="off"></div>
+    </div>
+    <div class="field"><label for="kdBai">Tên bài</label><input type="text" id="kdBai" maxlength="120" required autocomplete="off"></div>
+    <p class="hint" id="kdInfo"></p>
+    <div class="row"><button type="button" class="btn" id="kdCancel">Hủy</button><button type="submit" class="btn primary sm" id="kdSave" style="min-height:44px;font-size:15px">☁ Lưu lên kho</button></div>
+  </form>
+</dialog>
 <main class="setup" id="setup">
   <div class="card">
     <header class="head">
@@ -406,7 +437,6 @@ pre.code{margin:8px 0 0;max-height:180px;overflow:auto;padding:12px;border-radiu
         <p class="byline"><span class="by-who"><span class="by-mark" aria-hidden="true"></span><span class="by-name">Thầy Vũ Tiến Lực</span></span><span class="by-sch">Trường THPT Nguyễn Hữu Cảnh<span class="by-sep" aria-hidden="true"></span><span class="by-city">TP.HCM</span></span></p>
       </div>
       <nav class="head-nav" aria-label="Trang web khác">
-        <button type="button" class="btn head-link head-install" id="btnInstall" hidden title="Cài lên máy như một ứng dụng, mở được cả khi mất mạng">📲 <span>Cài ứng dụng</span></button>
         <a class="btn head-link" href="https://trinhchieusn.vercel.app/" target="_blank" rel="noopener" title="Mở trang trinhchieusn.vercel.app trong tab mới">🎉 <span>Sinh nhật, vinh danh</span> <i aria-hidden="true">↗</i></a>
       </nav>
     </header>
@@ -416,6 +446,7 @@ pre.code{margin:8px 0 0;max-height:180px;overflow:auto;padding:12px;border-radiu
         <button type="button" class="src-btn" id="btnFiles" title="Chọn một hoặc nhiều ảnh"><span class="si" aria-hidden="true">🖼️</span><b>Chọn ảnh</b></button>
         <button type="button" class="src-btn" id="btnFolder" title="Mỗi thư mục con thành một bộ ảnh"><span class="si" aria-hidden="true">🗂️</span><b>Cả thư mục</b></button>
         <button type="button" class="src-btn" id="btnSheet" aria-expanded="false" aria-controls="sheetBox" title="Link ảnh hoặc thư mục Google Drive"><span class="si" aria-hidden="true">📊</span><b>Google Sheet</b></button>
+        <button type="button" class="src-btn src-kho" id="btnKho" aria-expanded="false" aria-controls="khoBox" title="Bài giảng đã lưu trên Google Sheet của thầy, mở nhanh ở mọi máy"><span class="si" aria-hidden="true">☁️</span><b>Kho bài giảng</b></button>
         <button type="button" class="src-btn src-board" id="btnBoard" title="Bảng trắng để viết, vẽ, dán ảnh (Ctrl+V)"><span class="si" aria-hidden="true">🧑‍🏫</span><b>Bảng dạy học</b></button>
       </div>
       <input type="file" id="inFiles" accept="image/*" multiple hidden>
@@ -430,6 +461,15 @@ pre.code{margin:8px 0 0;max-height:180px;overflow:auto;padding:12px;border-radiu
           <label for="fSheetName">Tên bộ ảnh <span class="hint" style="display:inline;font-weight:400">· không bắt buộc</span></label>
           <input type="text" id="fSheetName" maxlength="80" placeholder="Ví dụ: Bài 3 - Hàm số bậc hai" autocomplete="off">
         </div>
+        <div class="kho-save">
+          <label class="sw"><input type="checkbox" id="fKhoSave"> Lưu link lên Kho bài giảng để máy khác mở nhanh</label>
+          <div class="row2" id="khoFields">
+            <div class="field"><label for="fKhoLop">Lớp</label><select id="fKhoLop"></select></div>
+            <div class="field"><label for="fKhoCd">Chủ đề, chương</label><input type="text" id="fKhoCd" list="khoCds" maxlength="120" placeholder="Ví dụ: Chương 4. Quan hệ song song" autocomplete="off"></div>
+          </div>
+          <p class="hint" id="khoSaveHint"></p>
+        </div>
+        <datalist id="khoCds"></datalist>
         <div class="row"><button type="button" class="btn" id="btnLoadSheet">⬇️ Tải ảnh</button></div>
         <p class="status" id="sheetStatus" role="status"></p>
         <p class="hint">Sheet và ảnh trên Drive cần chia sẻ "Bất kỳ ai có đường liên kết đều xem được". Cột <b>Link ảnh</b> là bắt buộc. Thêm cột <b>Thư mục</b> (hoặc Bài) để chia thành nhiều bộ ảnh, cột <b>Chú thích</b> để hiện chữ dưới ảnh.</p>
@@ -444,6 +484,41 @@ pre.code{margin:8px 0 0;max-height:180px;overflow:auto;padding:12px;border-radiu
           <div class="row" style="margin-top:8px"><button type="button" class="btn sm" id="btnCopyScript">📋 Sao chép mã</button></div>
           <pre class="code" id="gsCode"></pre>
         </details>
+      </div>
+
+      <div class="box kho" id="khoBox" hidden>
+        <div id="khoOn">
+          <div class="kho-top">
+            <div class="chips" id="khoLops" role="toolbar" aria-label="Lọc theo lớp"></div>
+            <input type="search" id="khoQ" placeholder="Tìm bài, chủ đề…" aria-label="Tìm bài trong kho" autocomplete="off">
+            <button type="button" class="btn sm" id="khoReload" title="Tải lại danh sách từ Google Sheet" aria-label="Tải lại danh sách">⟳</button>
+          </div>
+          <p class="status" id="khoStatus" role="status"></p>
+          <div class="kho-list" id="khoList"></div>
+          <details class="more">
+            <summary>Dùng kho trên máy khác</summary>
+            <p class="hint" style="margin-top:6px">Sao chép link kết nối rồi mở trên máy khác (gửi qua Zalo, email cho chính thầy): app tự nhớ kho, không phải dán lại. Link có mã bí mật, thầy không chia sẻ công khai.</p>
+            <div class="row" style="margin-top:8px"><button type="button" class="btn sm" id="khoShare">🔗 Sao chép link kết nối</button><button type="button" class="btn sm" id="khoEdit">✎ Đổi kho</button><button type="button" class="btn sm" id="khoOut">Ngắt kết nối</button></div>
+          </details>
+        </div>
+        <div id="khoOff" hidden>
+          <p class="kho-lead"><b>Kho bài giảng</b> lưu link ảnh trên Google Sheet của thầy theo Lớp › Chủ đề › Bài. Kết nối một lần, máy nào cũng mở lại bài trong vài giây.</p>
+          <div class="field"><label for="fKhoUrl">Link ứng dụng web Apps Script</label><input type="url" id="fKhoUrl" placeholder="https://script.google.com/macros/s/…/exec" spellcheck="false" autocomplete="off"></div>
+          <div class="field"><label for="fKhoKey">Mã bí mật</label><input type="text" id="fKhoKey" placeholder="Mã đặt ở dòng MA_BI_MAT" spellcheck="false" autocomplete="off"></div>
+          <div class="row"><button type="button" class="btn" id="khoConnect">☁️ Kết nối kho</button></div>
+          <p class="status" id="khoConnStatus" role="status"></p>
+          <details class="more">
+            <summary>Tạo kho trên Google Sheet (làm một lần, khoảng 3 phút)</summary>
+            <ol>
+              <li>Tạo một Google Sheet mới, đặt tên ví dụ <b>Kho bài giảng</b> → <b>Tiện ích mở rộng</b> → <b>Apps Script</b>.</li>
+              <li>Xóa mã có sẵn, dán đoạn mã dưới đây. Đổi <b>doi-ma-nay</b> thành mã riêng của thầy rồi bấm <b>Lưu</b>.</li>
+              <li>Bấm <b>Triển khai</b> → <b>Tùy chọn triển khai mới</b> → chọn loại <b>Ứng dụng web</b>. Thực thi với tư cách: <b>Tôi</b>. Người có quyền truy cập: <b>Bất kỳ ai</b>. Bấm <b>Triển khai</b> và cấp quyền.</li>
+              <li>Sao chép <b>URL ứng dụng web</b> (kết thúc bằng /exec), dán vào ô trên cùng mã bí mật, bấm <b>Kết nối kho</b>.</li>
+            </ol>
+            <div class="row" style="margin-top:8px"><button type="button" class="btn sm" id="khoCopyCode">📋 Sao chép mã</button></div>
+            <pre class="code" id="khoCode"></pre>
+          </details>
+        </div>
       </div>
 
       <div class="drop-zone" id="dropZone">
@@ -633,7 +708,7 @@ function tx(stores, mode, fn) {
   }));
 }
 function dbFail() { if (DB.off) return; DB.off = true; toast('Trình duyệt không lưu được ảnh (bộ nhớ đầy hoặc bị chặn). Ảnh chỉ giữ đến khi tải lại trang.', 5000); }
-const albRow = a => ({ id: a.id, name: a.name, ord: a.ord, kind: a.kind, sheet: a.sheet || '', skey: a.skey || '', group: a.group || '', t: a.t });
+const albRow = a => ({ id: a.id, name: a.name, ord: a.ord, kind: a.kind, sheet: a.sheet || '', skey: a.skey || '', group: a.group || '', kho: a.kho || null, t: a.t });
 const itemRow = it => ({ id: it.id, album: it.album, ord: it.ord, name: it.name || '', cap: it.cap || '', blob: it.blob || null, tb: it.tb || null, url: it.url || '' });
 const dbSaveAlbum = a => DB.off ? 0 : tx('albums', 'readwrite', t => { t.objectStore('albums').put(albRow(a)); }).catch(dbFail);
 const dbSaveItems = list => DB.off || !list.length ? 0 : tx('items', 'readwrite', t => { const s = t.objectStore('items'); list.forEach(it => s.put(itemRow(it))); }).catch(dbFail);
@@ -650,7 +725,7 @@ const driveImg = (u, w) => { const id = driveId(u); return id ? `https://drive.g
 
 /* ---------- Thư viện ---------- */
 const LIB = [];
-const KIND = { local: 'ảnh từ máy', sheet: 'Google Sheet', links: 'link ảnh' };
+const KIND = { local: 'ảnh từ máy', sheet: 'Google Sheet', links: 'link ảnh', kho: 'Kho bài giảng' };
 function mkItem(r) {
   const it = Object.assign({}, r);
   if (r.blob) { it.src = URL.createObjectURL(r.blob); it.thumb = r.tb ? URL.createObjectURL(r.tb) : it.src; }
@@ -811,18 +886,19 @@ async function loadSheet(link, nameHint, silentAlbum) {
   const groups = rowsToGroups(rows), total = [...groups.values()].reduce((s, l) => s + l.length, 0);
   if (!total) { sheetStatus('Sheet không có link ảnh nào. Cột link ảnh cần bắt đầu bằng https://', 'bad'); return; }
   const key = sheetKey(link), old = LIB.filter(a => a.kind === 'sheet' && a.skey === key);
-  let first = null;
+  let first = null; const made = [];
   for (const [g, list] of groups) {
     let a = old.find(x => x.group === g);
     if (a) { dbDelItems(a.items.map(it => it.id)); a.items.forEach(freeItem); a.items = []; a.sheet = link; dbSaveAlbum(a); }
     else a = newAlbum(g || nameHint || 'Bộ ảnh từ Google Sheet', 'sheet', { sheet: link, skey: key, group: g });
     a.items = list.map((r, i) => mkItem({ id: uid(), album: a.id, ord: i, name: r.name, cap: r.cap, url: r.url }));
-    dbSaveItems(a.items); if (!first) first = a;
+    dbSaveItems(a.items); made.push(a); if (!first) first = a;
   }
   old.filter(a => !groups.has(a.group)).forEach(a => { removeAlbum(a, true); });
   S.cur = first.id; S.sheet = link; save(); render();
   sheetStatus(`Đã tải ${total} ảnh` + (groups.size > 1 ? ` vào ${groups.size} bộ ảnh` : '') + '.', 'ok');
   if (silentAlbum) toast(`Đã cập nhật ${total} ảnh từ Sheet`);
+  return made;
 }
 function loadLinks(text, nameHint) {
   const urls = text.split(/\s+/).filter(isUrl);
@@ -832,16 +908,17 @@ function loadLinks(text, nameHint) {
   const add = urls.map((u, i) => mkItem({ id: uid(), album: a.id, ord: a.items.length + i, name: '', cap: '', url: u }));
   a.items.push(...add); dbSaveItems(add); S.cur = a.id; save(); render();
   sheetStatus(`Đã thêm ${add.length} ảnh vào "${a.name}".`, 'ok');
+  return [a];
 }
-function onLoadSheet() {
+async function onLoadSheet() {
   const txt = $('#fSheet').value.trim(), name = $('#fSheetName').value.trim();
   if (!txt) { sheetStatus('Thầy dán link Google Sheet hoặc link ảnh vào ô trên.', 'bad'); $('#fSheet').focus(); return; }
   if (/drive\.google\.com\/drive\/(u\/\d+\/)?folders\//.test(txt)) {
     sheetStatus('Đây là link thư mục Drive. Trang web không tự đọc được thư mục Drive, thầy dùng mục "Lấy cả thư mục ảnh trên Google Drive vào Sheet" bên dưới.', 'bad');
     $('#sheetBox details').open = true; return;
   }
-  if (/docs\.google\.com\/spreadsheets/.test(txt)) loadSheet(txt.split(/\s+/)[0], name);
-  else loadLinks(txt, name);
+  const made = /docs\.google\.com\/spreadsheets/.test(txt) ? await loadSheet(txt.split(/\s+/)[0], name) : loadLinks(txt, name);
+  await khoAfterLoad(made);
 }
 
 /* ---------- Thao tác bộ ảnh ---------- */
@@ -868,6 +945,8 @@ function render() {
         <div class="alb-acts">
           <button type="button" class="ib play" data-a="play" title="Trình chiếu bộ này" aria-label="Trình chiếu ${esc(a.name)}">▶</button>
           ${a.kind === 'sheet' ? '<button type="button" class="ib" data-a="sync" title="Tải lại từ Google Sheet" aria-label="Tải lại từ Google Sheet">⟳</button>' : ''}
+          ${a.kind === 'kho' ? '<button type="button" class="ib" data-a="khosync" title="Tải lại bài này từ Kho bài giảng" aria-label="Tải lại từ kho">⟳</button>' : ''}
+          ${a.items.some(it => it.url) ? `<button type="button" class="ib${a.kho ? ' saved' : ''}" data-a="kho" title="${a.kho ? 'Đã lưu ở kho: ' + esc(lopName(a.kho.lop) + (a.kho.chude ? ' › ' + a.kho.chude : '') + ' › ' + a.kho.bai) + ' · bấm để lưu lại' : 'Lưu link ảnh lên Kho bài giảng'}" aria-label="Lưu lên Kho bài giảng">☁</button>` : ''}
           <button type="button" class="ib" data-a="ren" title="Đổi tên" aria-label="Đổi tên bộ ảnh">✎</button>
           <button type="button" class="ib del" data-a="del" title="Xóa bộ ảnh" aria-label="Xóa bộ ảnh">🗑</button>
         </div>
@@ -910,6 +989,10 @@ $('#albums').addEventListener('click', e => {
   if (act === 'sel') { S.cur = S.cur === a.id ? '' : a.id; save(); render(); }
   else if (act === 'play') { S.cur = a.id; save(); render(); openViewer(a, 0); }
   else if (act === 'sync') loadSheet(a.sheet, a.name, true);
+  else if (act === 'kho') khoDlgOpen(a);
+  else if (act === 'khosync') {
+    khoRefresh(true).then(() => { const x = khoLessons().find(l => a.kho && l.id === khoId(a.kho.lop, a.kho.chude, a.kho.bai)); if (x) khoOpen(x, false); else toast('Không thấy bài này trong kho (có thể đã bị xóa hoặc đổi tên)', 3200); });
+  }
   else if (act === 'ren') rename(art, a);
   else if (act === 'del') { if (confirm(`Xóa bộ ảnh "${a.name}" (${a.items.length} ảnh)? Không hoàn tác được.`)) removeAlbum(a); }
   else if (act === 'sort') { a.items.sort((x, y) => natCmp(x.name || x.cap || x.url, y.name || y.cap || y.url)); renumber(a); render(); toast('Đã xếp theo tên', 1400); }
@@ -1011,6 +1094,246 @@ $('#btnCopyScript').addEventListener('click', () => {
     const r = document.createRange(); r.selectNodeContents($('#gsCode')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast('Thầy nhấn Ctrl+C để sao chép');
   });
 });
+
+/* ---------- Kho bài giảng trên Google Sheet ----------
+   Link ảnh lưu theo Lớp › Chủ đề › Bài vào trang "Kho ảnh" của Sheet của thầy, qua một ứng dụng web Apps Script.
+   Máy khác chỉ cần kết nối kho (dán link …/exec và mã, hoặc mở link kết nối) là mở lại được từng bài. */
+const KHO_GS = `/** Kho bài giảng · Trình chiếu ảnh dạy học (thầy Vũ Tiến Lực)
+ *  Lưu link ảnh theo Lớp › Chủ đề › Bài để máy nào cũng mở lại nhanh. */
+const MA_BI_MAT = 'doi-ma-nay';   // đổi thành mã riêng, nhập đúng mã này trong app
+const TEN_TRANG = 'Kho ảnh';
+const COT = ['Lớp', 'Chủ đề', 'Bài', 'Thứ tự', 'Link ảnh', 'Chú thích', 'Cập nhật'];
+
+function trang_() {
+  const ss = SpreadsheetApp.getActive();
+  let sh = ss.getSheetByName(TEN_TRANG);
+  if (!sh) {
+    sh = ss.insertSheet(TEN_TRANG); sh.appendRow(COT); sh.setFrozenRows(1);
+    sh.getRange(1, 1, 1, COT.length).setFontWeight('bold').setBackground('#fde7d9');
+  }
+  return sh;
+}
+function tra_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
+function chu_(x) { x = String(x == null ? '' : x); return /^[=+\\-@]/.test(x) ? "'" + x : x; }
+
+function doGet(e) {
+  if ((e.parameter || {}).key !== MA_BI_MAT) return tra_({ ok: false, loi: 'ma' });
+  const v = trang_().getDataRange().getDisplayValues().slice(1).filter(r => r[4]);
+  return tra_({ ok: true, rows: v.map(r => [r[0], r[1], r[2], Number(r[3]) || 0, r[4], r[5], r[6]]) });
+}
+function doPost(e) {
+  const d = JSON.parse((e.postData && e.postData.contents) || '{}');
+  if (d.key !== MA_BI_MAT) return tra_({ ok: false, loi: 'ma' });
+  const lock = LockService.getScriptLock(); lock.waitLock(20000);
+  try {
+    const sh = trang_(), n = sh.getLastRow(), cu = n > 1 ? sh.getRange(2, 1, n - 1, COT.length).getValues() : [];
+    const cung = r => String(r[0]) === String(d.lop) && String(r[1]) === String(d.chude) && String(r[2]) === String(d.bai);
+    let moi = cu.filter(r => !cung(r));
+    if (d.action === 'save') {
+      const t = new Date();
+      moi = moi.concat((d.items || []).map((it, i) => [chu_(d.lop), chu_(d.chude), chu_(d.bai), i + 1, chu_(it.url), chu_(it.cap), t]));
+    }
+    if (n > 1) sh.getRange(2, 1, n - 1, COT.length).clearContent();
+    if (moi.length) sh.getRange(2, 1, moi.length, COT.length).setValues(moi);
+    return tra_({ ok: true, n: (d.items || []).length });
+  } finally { lock.releaseLock(); }
+}`;
+const KHO = { rows: null, lop: 'all', q: '', busy: false };
+const KHO_CACHE = KEY + '-kho';
+try { const c = JSON.parse(localStorage.getItem(KHO_CACHE) || 'null'); if (Array.isArray(c)) KHO.rows = c; } catch (e) {}
+const khoOn = () => !!(S.khoUrl && S.khoKey);
+const lopName = l => /^\d+$/.test(l) ? 'Lớp ' + l : (l || 'Khác');
+const khoId = (l, c, b) => [l, c, b].join('\u0001');
+const KHO_LOPS = ['6', '7', '8', '9', '10', '11', '12', 'Khác'];
+$$('#fKhoLop, #kdLop').forEach(s => { s.innerHTML = KHO_LOPS.map(l => `<option value="${l}">${lopName(l)}</option>`).join(''); });
+
+function khoErr(e) {
+  const m = String(e && e.message || e);
+  if (m === 'ma') return 'Sai mã bí mật. Thầy nhập đúng mã đã đặt ở dòng MA_BI_MAT trong Apps Script.';
+  if (m === 'offline' || !navigator.onLine) return 'Máy đang mất mạng, chưa kết nối được kho.';
+  return 'Không kết nối được kho. Thầy kiểm tra link kết thúc bằng /exec, lúc triển khai chọn "Bất kỳ ai" được truy cập, và máy đang có mạng.';
+}
+async function khoGet(url = S.khoUrl, key = S.khoKey) {
+  if (!navigator.onLine) throw new Error('offline');
+  const r = await fetch(url + (url.includes('?') ? '&' : '?') + 'key=' + encodeURIComponent(key) + '&t=' + Date.now(), { cache: 'no-store' });
+  const j = await r.json(); if (!j.ok) throw new Error(j.loi || 'loi');
+  return j.rows || [];
+}
+async function khoPost(body) {
+  if (!navigator.onLine) throw new Error('offline');
+  const r = await fetch(S.khoUrl, { method: 'POST', body: JSON.stringify(Object.assign({ key: S.khoKey }, body)) });
+  const j = await r.json(); if (!j.ok) throw new Error(j.loi || 'loi');
+  return j;
+}
+function khoKeep(rows) { KHO.rows = rows; try { localStorage.setItem(KHO_CACHE, JSON.stringify(rows)); } catch (e) {} khoCds(); }
+/* Gom các dòng thành từng bài: [{lop, cd, bai, items:[{url, cap}]}] */
+function khoLessons() {
+  const m = new Map();
+  (KHO.rows || []).forEach(([l, c, b, o, url, cap, t]) => {
+    const id = khoId(l, c, b); if (!m.has(id)) m.set(id, { id, lop: l, cd: c, bai: b, t, items: [] });
+    m.get(id).items.push({ o: +o || 0, url, cap });
+  });
+  const list = [...m.values()]; list.forEach(x => x.items.sort((a, b) => a.o - b.o));
+  const li = l => { const k = KHO_LOPS.indexOf(l); return k < 0 ? 99 : k; };
+  return list.sort((a, b) => li(a.lop) - li(b.lop) || natCmp(a.cd, b.cd) || natCmp(a.bai, b.bai));
+}
+function khoCds() { const s = new Set((KHO.rows || []).map(r => r[1]).filter(Boolean)); $('#khoCds').innerHTML = [...s].sort(natCmp).map(c => `<option value="${esc(c)}">`).join(''); }
+function khoStatus(msg, kind) { const el = $('#khoStatus'); el.textContent = msg || ''; el.className = 'status' + (kind ? ' ' + kind : ''); }
+
+function renderKho() {
+  $('#khoOn').hidden = !khoOn(); $('#khoOff').hidden = khoOn();
+  if (!khoOn()) return;
+  const all = khoLessons(), lops = [...new Set(all.map(x => x.lop))];
+  if (KHO.lop !== 'all' && !lops.includes(KHO.lop)) KHO.lop = 'all';
+  $('#khoLops').innerHTML = [['all', 'Tất cả']].concat(lops.map(l => [l, lopName(l)])).map(([v, n]) => `<button type="button" class="chip" data-klop="${esc(v)}" aria-pressed="${v === KHO.lop}">${esc(n)}</button>`).join('');
+  const words = noAccent(KHO.q).split(/\s+/).filter(Boolean);
+  const list = all.filter(x => (KHO.lop === 'all' || x.lop === KHO.lop) && words.every(w => noAccent(x.lop + ' ' + lopName(x.lop) + ' ' + x.cd + ' ' + x.bai).includes(w)));
+  if (KHO.rows == null) { $('#khoList').innerHTML = '<p class="hint">Đang tải danh sách bài…</p>'; return; }
+  if (!all.length) { $('#khoList').innerHTML = '<p class="kho-empty">Kho chưa có bài nào. Thầy mở mục Google Sheet, dán link ảnh, bật "Lưu link lên Kho bài giảng" rồi bấm Tải ảnh.</p>'; return; }
+  if (!list.length) { $('#khoList').innerHTML = '<p class="kho-empty">Không có bài phù hợp.</p>'; return; }
+  const local = new Set(LIB.filter(a => a.kho).map(a => khoId(a.kho.lop, a.kho.chude, a.kho.bai)));
+  let html = '', grp = '';
+  list.forEach(x => {
+    const g = lopName(x.lop) + (x.cd ? ' · ' + x.cd : '');
+    if (g !== grp) { html += (grp ? '</div>' : '') + `<h4 class="kho-h">${esc(g)}</h4><div class="kho-g">`; grp = g; }
+    html += `<div class="kho-it" data-kid="${esc(x.id)}"><button type="button" class="kho-open" data-k="open" title="Tải bài này vào danh sách bộ ảnh"><span class="kho-n">${esc(x.bai || 'Chưa đặt tên')}</span><small>${x.items.length} ảnh${local.has(x.id) ? ' · đã có trên máy' : ''}</small></button>
+      <button type="button" class="ib play" data-k="play" title="Trình chiếu ngay" aria-label="Trình chiếu ${esc(x.bai)}">▶</button><button type="button" class="ib del" data-k="del" title="Xóa bài khỏi kho" aria-label="Xóa ${esc(x.bai)} khỏi kho">🗑</button></div>`;
+  });
+  $('#khoList').innerHTML = html + '</div>';
+}
+async function khoRefresh(quiet) {
+  if (!khoOn() || KHO.busy) return; KHO.busy = true;
+  if (!quiet) khoStatus('Đang tải danh sách bài từ kho…');
+  try { khoKeep(await khoGet()); khoStatus(''); }
+  catch (e) { khoStatus(khoErr(e) + (KHO.rows && KHO.rows.length ? ' Đang hiện danh sách đã lưu lần trước.' : ''), 'bad'); }
+  KHO.busy = false; renderKho();
+}
+/* Mở một bài từ kho thành bộ ảnh trên máy (bài đã có thì cập nhật lại ảnh) */
+function khoOpen(x, play) {
+  let a = LIB.find(b => b.kho && khoId(b.kho.lop, b.kho.chude, b.kho.bai) === x.id);
+  if (a) { dbDelItems(a.items.map(it => it.id)); a.items.forEach(freeItem); a.items = []; a.name = x.bai || a.name; }
+  else a = newAlbum(x.bai || 'Bài từ kho', 'kho', { kho: { lop: x.lop, chude: x.cd, bai: x.bai } });
+  a.items = x.items.map((r, i) => mkItem({ id: uid(), album: a.id, ord: i, name: '', cap: r.cap || '', url: r.url }));
+  dbSaveAlbum(a); dbSaveItems(a.items); S.cur = a.id; save(); render(); renderKho();
+  if (play) openViewer(a, 0); else toast(`Đã tải "${a.name}" (${a.items.length} ảnh)`, 1800);
+  return a;
+}
+async function khoSave(a, lop, cd, bai) {
+  const items = a.items.filter(it => it.url).map(it => ({ url: it.url, cap: it.cap || '' }));
+  if (!items.length) { toast('Bộ ảnh này không có link ảnh nào để lưu (ảnh từ máy chưa có link).', 3500); return false; }
+  if (!khoOn()) { toast('Chưa kết nối Kho bài giảng · thầy bấm ☁️ Kho bài giảng để kết nối', 3500); return false; }
+  bai = (bai || a.name).trim(); cd = (cd || '').trim();
+  try {
+    await khoPost({ action: 'save', lop, chude: cd, bai, items });
+    a.kho = { lop, chude: cd, bai }; dbSaveAlbum(a);
+    const id = khoId(lop, cd, bai), t = new Date().toLocaleString('vi-VN');
+    const keep = (KHO.rows || []).filter(r => khoId(r[0], r[1], r[2]) !== id);
+    khoKeep(keep.concat(items.map((it, i) => [lop, cd, bai, i + 1, it.url, it.cap, t])));
+    S.khoLop = lop; S.khoCd = cd; save(); renderKho(); render();
+    const skip = a.items.length - items.length;
+    toast(`Đã lưu ${items.length} link lên kho: ${lopName(lop)}${cd ? ' › ' + cd : ''} › ${bai}` + (skip ? ` (bỏ qua ${skip} ảnh từ máy)` : ''), 3500);
+    return true;
+  } catch (e) { toast(khoErr(e), 4500); return false; }
+}
+
+/* Mở, đóng hộp kho */
+$('#btnKho').addEventListener('click', () => {
+  const box = $('#khoBox'), open = box.hidden; box.hidden = !open; $('#btnKho').setAttribute('aria-expanded', String(open));
+  if (!open) return;
+  renderKho();
+  if (khoOn()) khoRefresh(KHO.rows != null); else setTimeout(() => $('#fKhoUrl').focus(), 30);
+});
+$('#khoLops').addEventListener('click', e => { const b = e.target.closest('[data-klop]'); if (b) { KHO.lop = b.dataset.klop; renderKho(); } });
+$('#khoQ').addEventListener('input', () => { KHO.q = $('#khoQ').value; renderKho(); });
+$('#khoReload').addEventListener('click', () => khoRefresh());
+$('#khoList').addEventListener('click', async e => {
+  const b = e.target.closest('[data-k]'), it = e.target.closest('[data-kid]'); if (!b || !it) return;
+  const x = khoLessons().find(l => l.id === it.dataset.kid); if (!x) return;
+  if (b.dataset.k === 'open') khoOpen(x, false);
+  else if (b.dataset.k === 'play') khoOpen(x, true);
+  else if (b.dataset.k === 'del') {
+    if (!confirm(`Xóa bài "${x.bai}" (${x.items.length} ảnh) khỏi Kho bài giảng trên Google Sheet? Bộ ảnh trên máy này vẫn giữ.`)) return;
+    try { await khoPost({ action: 'delete', lop: x.lop, chude: x.cd, bai: x.bai }); khoKeep((KHO.rows || []).filter(r => khoId(r[0], r[1], r[2]) !== x.id)); renderKho(); toast('Đã xóa bài khỏi kho', 1600); }
+    catch (er) { toast(khoErr(er), 4500); }
+  }
+});
+/* Kết nối kho */
+function khoConnStatus(msg, kind) { const el = $('#khoConnStatus'); el.textContent = msg || ''; el.className = 'status' + (kind ? ' ' + kind : ''); }
+async function khoConnect(url, key, quiet) {
+  url = (url || '').trim(); key = (key || '').trim();
+  if (!/^https:\/\/script\.google(usercontent)?\.com\/.+/.test(url)) { khoConnStatus('Link ứng dụng web có dạng https://script.google.com/macros/s/…/exec', 'bad'); return false; }
+  if (!key) { khoConnStatus('Thầy nhập mã bí mật đã đặt trong Apps Script.', 'bad'); return false; }
+  khoConnStatus('Đang kết nối…');
+  try {
+    const rows = await khoGet(url, key);
+    S.khoUrl = url; S.khoKey = key; save(); khoKeep(rows); khoConnStatus(''); renderKho();
+    if (!quiet) toast('Đã kết nối Kho bài giảng · ' + khoLessons().length + ' bài', 2400);
+    khoUi(); return true;
+  } catch (e) { khoConnStatus(khoErr(e), 'bad'); return false; }
+}
+$('#khoConnect').addEventListener('click', () => khoConnect($('#fKhoUrl').value, $('#fKhoKey').value));
+$('#fKhoKey').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('#khoConnect').click(); } });
+$('#khoCode').textContent = KHO_GS;
+$('#khoCopyCode').addEventListener('click', () => {
+  (navigator.clipboard ? navigator.clipboard.writeText(KHO_GS) : Promise.reject()).then(() => toast('Đã sao chép mã Apps Script của kho'), () => {
+    const r = document.createRange(); r.selectNodeContents($('#khoCode')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast('Thầy nhấn Ctrl+C để sao chép');
+  });
+});
+/* Link kết nối cho máy khác: mở link là app tự nhớ kho, không cần dán lại */
+const khoLink = () => location.href.split('#')[0].split('?')[0] + '#kho=' + encodeURIComponent(S.khoUrl) + '&key=' + encodeURIComponent(S.khoKey);
+$('#khoShare').addEventListener('click', () => {
+  const u = khoLink();
+  (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => toast('Đã sao chép link kết nối. Mở link này trên máy khác là có ngay kho bài giảng.', 4200), () => prompt('Sao chép link này để mở trên máy khác:', u));
+});
+$('#khoEdit').addEventListener('click', () => { $('#fKhoUrl').value = S.khoUrl || ''; $('#fKhoKey').value = S.khoKey || ''; S.khoUrl = ''; save(); renderKho(); khoUi(); });
+$('#khoOut').addEventListener('click', () => {
+  if (!confirm('Ngắt kết nối Kho bài giảng trên máy này? Dữ liệu trên Google Sheet và các bộ ảnh đã tải vẫn giữ nguyên.')) return;
+  S.khoUrl = ''; S.khoKey = ''; save(); khoKeep([]); KHO.rows = null; try { localStorage.removeItem(KHO_CACHE); } catch (e) {} renderKho(); khoUi();
+});
+
+/* Lưu lên kho ngay khi nhập link ở mục Google Sheet */
+function khoUi() {
+  const on = $('#fKhoSave').checked;
+  $('#khoFields').hidden = !on;
+  $('#khoSaveHint').textContent = on && !khoOn() ? 'Chưa kết nối kho: bấm ☁️ Kho bài giảng ở trên để kết nối một lần.' : on ? 'Tên bài lấy theo ô "Tên bộ ảnh" (Sheet có cột Thư mục thì mỗi thư mục là một bài).' : '';
+}
+$('#fKhoSave').checked = S.khoSave !== false; $('#fKhoLop').value = S.khoLop || '10'; $('#fKhoCd').value = S.khoCd || ''; khoUi(); khoCds();
+$('#fKhoSave').addEventListener('change', () => { S.khoSave = $('#fKhoSave').checked; save(); khoUi(); });
+async function khoAfterLoad(albums) {
+  if (!$('#fKhoSave').checked || !albums || !albums.length) return;
+  if (!khoOn()) { toast('Đã tải ảnh. Chưa lưu lên kho vì chưa kết nối Kho bài giảng.', 3500); return; }
+  const lop = $('#fKhoLop').value, cd = $('#fKhoCd').value.trim();
+  for (const a of albums) await khoSave(a, lop, cd, a.name);
+}
+
+/* Hộp lưu một bộ ảnh lên kho (nút ☁ trên bộ ảnh) */
+let khoDlgAlb = null;
+function khoDlgOpen(a) {
+  khoDlgAlb = a; const k = a.kho || {};
+  $('#kdLop').value = k.lop || S.khoLop || '10'; $('#kdCd').value = k.chude != null ? k.chude : (S.khoCd || ''); $('#kdBai').value = k.bai || a.name;
+  const n = a.items.filter(it => it.url).length;
+  $('#kdInfo').textContent = `${n} link ảnh sẽ được lưu` + (n < a.items.length ? ` · ${a.items.length - n} ảnh từ máy không có link nên bỏ qua` : '') + (khoOn() ? '' : ' · chưa kết nối kho');
+  const d = $('#khoDlg'); if (d.showModal) d.showModal(); else d.setAttribute('open', '');
+  setTimeout(() => $('#kdBai').focus(), 30);
+}
+$('#khoDlg').addEventListener('submit', async e => {
+  e.preventDefault(); const a = khoDlgAlb; if (!a) return;
+  const btn = $('#kdSave'); btn.disabled = true; btn.textContent = 'Đang lưu…';
+  const ok = await khoSave(a, $('#kdLop').value, $('#kdCd').value, $('#kdBai').value || a.name);
+  btn.disabled = false; btn.textContent = '☁ Lưu lên kho';
+  if (ok) $('#khoDlg').close();
+});
+$('#kdCancel').addEventListener('click', () => $('#khoDlg').close());
+
+/* Mở bằng link kết nối (#kho=…&key=…) */
+(function khoFromLink() {
+  const m = location.hash.match(/[#&]kho=([^&]+)&key=([^&]*)/); if (!m) return;
+  history.replaceState(null, '', location.href.split('#')[0]);
+  let url = '', key = ''; try { url = decodeURIComponent(m[1]); key = decodeURIComponent(m[2]); } catch (e) { return; }
+  $('#fKhoUrl').value = url; $('#fKhoKey').value = key;
+  $('#khoBox').hidden = false; $('#btnKho').setAttribute('aria-expanded', 'true'); renderKho();
+  khoConnect(url, key).then(ok => { if (ok) renderKho(); });
+})();
 
 /* Tùy chọn trình chiếu */
 function fillOpts() {
@@ -3580,36 +3903,9 @@ addEventListener('resize', () => {
 });
 document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) VW.fsByUs = false; });
 
-/* ---------- Web app: cài lên máy, chạy khi mất mạng, mở ảnh bằng ứng dụng ---------- */
-const PWA = { ev: null };
-const isApp = () => matchMedia('(display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui)').matches || navigator.standalone === true;
-const isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-const onWeb = /^https?:$/.test(location.protocol);
-function pwaBtn() { $('#btnInstall').hidden = isApp() || !onWeb || !(PWA.ev || isIOS); }
-addEventListener('beforeinstallprompt', e => { e.preventDefault(); PWA.ev = e; pwaBtn(); });
-addEventListener('appinstalled', () => { PWA.ev = null; pwaBtn(); toast('Đã cài xong. Lần sau thầy mở bằng biểu tượng "Trình chiếu" trên máy.', 4000); });
-$('#btnInstall').addEventListener('click', async () => {
-  if (PWA.ev) { const ev = PWA.ev; PWA.ev = null; ev.prompt(); await ev.userChoice.catch(() => null); pwaBtn(); return; }
-  if (isIOS) toast('Trên iPad, iPhone: mở bằng Safari, bấm nút Chia sẻ rồi chọn "Thêm vào MH chính".', 6000);
-});
-if ('serviceWorker' in navigator && onWeb) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
-/* Ứng dụng đã cài giữ ảnh lâu dài, trình duyệt không tự xóa khi đầy bộ nhớ */
-if (isApp() && navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
-/* Máy tính: bấm chuột phải vào ảnh → Mở bằng → Trình chiếu, ảnh vào thành một bộ mới */
-let libReady = Promise.resolve();
-if ('launchQueue' in window) launchQueue.setConsumer(async p => {
-  if (!p.files || !p.files.length) return;
-  const files = (await Promise.all(p.files.map(h => h.getFile().catch(() => null)))).filter(Boolean);
-  await libReady; if (!files.length) return;
-  const a = newAlbum('Ảnh mở lúc ' + stamp(), 'local'); S.cur = a.id; save(); addLoose(files);
-});
-
 /* Khởi động */
 fillOpts();
-libReady = loadLib();
-pwaBtn();
-/* Lối tắt "Bảng dạy học" trên biểu tượng ứng dụng */
-if (/[?&]bang=1/.test(location.search)) { history.replaceState(null, '', location.pathname); libReady.then(() => $('#btnBoard').click()); }
+loadLib();
 loadMusic();
 })();
 </script>
